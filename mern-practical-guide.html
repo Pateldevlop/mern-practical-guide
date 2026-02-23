@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERN – Practical Learning Guide (Hindi)</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6ee;
+    --card: #ffffff;
+    --border: #e8ddd0;
+    --ink: #1a1208;
+    --muted: #7a6a55;
+    --accent: #e85d04;
+    --accent2: #0ea5e9;
+    --accent3: #16a34a;
+    --accent4: #7c3aed;
+    --yellow: #fbbf24;
+    --pink: #ec4899;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Baloo 2', cursive;
+    line-height: 1.6;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.5;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  /* HERO */
+  header {
+    background: var(--ink);
+    color: #fdf6ee;
+    padding: 50px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: 'MERN';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    font-size: 200px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 2px;
+    letter-spacing: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  header h1 .hi { color: var(--accent); }
+  .hero-sub {
+    color: rgba(253,246,238,0.6);
+    font-size: 15px;
+    max-width: 480px;
+    font-weight: 400;
+  }
+  .hero-emoji { font-size: 2rem; margin-right: 8px; }
+
+  /* FORMULA BOX */
+  .formula {
+    background: var(--accent);
+    color: white;
+    padding: 16px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    margin: 30px 0 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .formula-item {
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .formula-arrow { opacity: 0.6; }
+
+  /* SECTION */
+  section { padding: 56px 0; }
+  section:not(:last-of-type) { border-bottom: 2px dashed var(--border); }
+
+  .sec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sec-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .sec-sub { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
+
+  /* LEARNING METHOD CARDS */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .method-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .method-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .method-icon { font-size: 32px; margin-bottom: 10px; }
+  .method-title { font-weight: 800; font-size: 1.05rem; margin-bottom: 6px; }
+  .method-desc { font-size: 13px; color: var(--muted); font-weight: 400; line-height: 1.6; }
+  .method-card .corner-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+  .badge-must { background: #fee2e2; color: #dc2626; }
+  .badge-good { background: #dcfce7; color: #16a34a; }
+
+  /* STEP FLOW */
+  .step-flow { display: flex; flex-direction: column; gap: 16px; }
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    transition: border-color 0.2s;
+  }
+  .step:hover { border-color: var(--accent); }
+  .step-num {
+    width: 48px;
+    height: 48px;
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .step-content {}
+  .step-action {
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-action .emoji { font-size: 18px; }
+  .step-detail { font-size: 13px; color: var(--muted); font-weight: 400; line-height: 1.6; }
+  .step-time {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    background: #fef3c7;
+    color: #92400e;
+    border-radius: 3px;
+    margin-top: 8px;
+    font-weight: 700;
+  }
+
+  /* PHASE CARDS WITH HINDI RESOURCES */
+  .phase-block {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .phase-header {
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .phase-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  .phase-header h3 { font-weight: 800; font-size: 1.15rem; flex: 1; }
+  .phase-header .weeks {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .phase-body { padding: 18px 22px; }
+
+  .do-list { margin-bottom: 16px; }
+  .do-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .do-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--accent3);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .do-check:hover { border-color: var(--accent3); background: #f0fdf4; }
+  .do-text { line-height: 1.5; }
+  .do-text strong { font-weight: 700; }
+  .do-text .tip { font-size: 12px; color: var(--muted); display: block; }
+
+  /* RESOURCE ROWS */
+  .resource-section { margin-top: 16px; }
+  .resource-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .resource-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .resource-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+  .resource-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1.5px solid;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .resource-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .rc-yt { border-color: #fca5a5; background: #fff1f1; color: #dc2626; }
+  .rc-yt-h { border-color: #ff7043; background: #fff3e0; color: #bf360c; }
+  .rc-doc { border-color: #93c5fd; background: #eff6ff; color: #1d4ed8; }
+  .rc-free { border-color: #86efac; background: #f0fdf4; color: #15803d; }
+
+  .hindi-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    background: #ff7043;
+    color: white;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+
+  /* DAILY ROUTINE */
+  .routine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .routine-slot {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .slot-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .slot-activity { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .slot-mins {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .slot-unit { font-size: 11px; color: var(--muted); }
+  .slot-icon { font-size: 22px; margin-bottom: 6px; }
+
+  /* IMPORTANT TIP BOX */
+  .tip-box {
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 2px solid #fcd34d;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 16px 0;
+  }
+  .tip-box-icon { font-size: 24px; flex-shrink: 0; }
+  .tip-box-title { font-weight: 800; margin-bottom: 4px; }
+  .tip-box-text { font-size: 14px; color: var(--muted); font-weight: 400; }
+
+  /* MISTAKE SECTION */
+  .mistake-list { display: flex; flex-direction: column; gap: 12px; }
+  .mistake-item {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    align-items: flex-start;
+  }
+  .mistake-x {
+    width: 40px;
+    height: 40px;
+    background: #fee2e2;
+    color: #dc2626;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .mistake-title { font-weight: 700; margin-bottom: 3px; }
+  .mistake-fix { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .fix-text { color: var(--accent3); font-weight: 600; }
+
+  /* CHECKLIST INTERACTIVITY */
+  .do-item.checked .do-check { background: var(--accent3); border-color: var(--accent3); color: white; }
+  .do-item.checked .do-text { text-decoration: line-through; opacity: 0.5; }
+
+  footer {
+    background: var(--ink);
+    color: rgba(253,246,238,0.5);
+    text-align: center;
+    padding: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  @media (max-width: 600px) {
+    .method-grid { grid-template-columns: 1fr; }
+    .routine-grid { grid-template-columns: 1fr 1fr; }
+    header h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <div class="hero-tag">🇮🇳 Hindi-First Guide</div>
+    <h1><span class="hero-emoji">🔥</span>Theory Boring Lagti Hai?<br><span class="hi">Seedha Code Karo!</span></h1>
+    <p class="hero-sub">Yeh guide sirf practical approach follow karta hai — pehle dekhoo, phir banao, phir samjho. Hindi resources ke saath.</p>
+    <div class="formula">
+      <span>📺 Video dekhna</span>
+      <span class="formula-arrow">→</span>
+      <span class="formula-item">⌨️ Saath-saath type karo</span>
+      <span class="formula-arrow">→</span>
+      <span class="formula-item">🔨 Khud kuch banao</span>
+      <span class="formula-arrow">→</span>
+      <span class="formula-item">🚀 GitHub pe daalo</span>
+    </div>
+  </div>
+</header>
+
+<!-- METHOD SECTION -->
+<section>
+  <div class="container">
+    <div class="sec-label">// Practical Learning Method</div>
+    <div class="sec-title">Theory Se Nahi,<br>Coding Se Seekho</div>
+    <p class="sec-sub">Ye 4 rules follow karo — boring nahi lagega aur fast bhi seekhoge</p>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="corner-badge badge-must">MUST</div>
+        <div class="method-icon">📺</div>
+        <div class="method-title">Video + Code Saath</div>
+        <div class="method-desc">Video pause karo, khud type karo. Copy-paste bilkul mat karo. Haath se type karne se fingers ko yaad rehta hai.</div>
+      </div>
+      <div class="method-card">
+        <div class="corner-badge badge-must">MUST</div>
+        <div class="method-icon">🔨</div>
+        <div class="method-title">Har Topic Pe Mini Project</div>
+        <div class="method-desc">Array seekha? Array se todo list banao. Mongoose seekha? Khud ek student database banao. Sirf exercise nahi — real project.</div>
+      </div>
+      <div class="method-card">
+        <div class="corner-badge badge-good">GOOD</div>
+        <div class="method-icon">🐛</div>
+        <div class="method-title">Error Ko Dosto Samjho</div>
+        <div class="method-desc">Error aaye toh 30 min khud solve karo — Google, Stack Overflow, console.log. Yeh skill hi developer banati hai.</div>
+      </div>
+      <div class="method-card">
+        <div class="corner-badge badge-good">GOOD</div>
+        <div class="method-icon">📂</div>
+        <div class="method-title">Roz GitHub Pe Push</div>
+        <div class="method-desc">Chahe 5 lines ka code ho — push karo. 3 mahine baad green squares dekh ke motivation milega. Employers bhi dekhte hain.</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-box-icon">💡</div>
+      <div>
+        <div class="tip-box-title">Sabse Bada Secret</div>
+        <div class="tip-box-text">Pehle 30 min video dekhke concept samjho, baaki 1.5 ghante sirf coding karo. 80% time coding mein lagao — theory mein nahi. Aur jo seekha usse same din kisi ko explain karo (ya comment mein likho) — pakka yaad rehega.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAILY ROUTINE -->
+<section>
+  <div class="container">
+    <div class="sec-label">// Daily Schedule</div>
+    <div class="sec-title">2-3 Ghante Ka<br>Smart Schedule</div>
+    <p class="sec-sub">Agar roz 2.5 ghante bhi do toh 6 mahine mein job-ready ho jaoge</p>
+
+    <div class="routine-grid">
+      <div class="routine-slot">
+        <div class="slot-icon">🎯</div>
+        <div class="slot-time">PEHLE</div>
+        <div class="slot-activity">Goal Set Karo</div>
+        <span class="slot-mins">10</span>
+        <div class="slot-unit">minutes</div>
+      </div>
+      <div class="routine-slot">
+        <div class="slot-icon">📺</div>
+        <div class="slot-time">PHASE 1</div>
+        <div class="slot-activity">Video Dekho</div>
+        <span class="slot-mins">30</span>
+        <div class="slot-unit">minutes max</div>
+      </div>
+      <div class="routine-slot">
+        <div class="slot-icon">⌨️</div>
+        <div class="slot-time">PHASE 2</div>
+        <div class="slot-activity">Code Karo</div>
+        <span class="slot-mins">90</span>
+        <div class="slot-unit">minutes — core time</div>
+      </div>
+      <div class="routine-slot">
+        <div class="slot-icon">🔁</div>
+        <div class="slot-time">PHASE 3</div>
+        <div class="slot-activity">Review + Git</div>
+        <span class="slot-mins">20</span>
+        <div class="slot-unit">minutes</div>
+      </div>
+      <div class="routine-slot">
+        <div class="slot-icon">📝</div>
+        <div class="slot-time">LAST</div>
+        <div class="slot-activity">Notes (1 line)</div>
+        <span class="slot-mins">5</span>
+        <div class="slot-unit">minutes only</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HINDI RESOURCES BY PHASE -->
+<section>
+  <div class="container">
+    <div class="sec-label">// Hindi Resources Phase-wise</div>
+    <div class="sec-title">Kya Seekhna Hai &<br>Kahan Se Seekhna Hai</div>
+    <p class="sec-sub">Har phase ke liye exact steps + best Hindi YouTube channels</p>
+
+    <!-- PHASE 0 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-badge" style="background:#dcfce7;color:#15803d;">PHASE 0</div>
+        <h3>HTML + CSS + JavaScript Basics</h3>
+        <span class="weeks">⏱ 2 Weeks</span>
+      </div>
+      <div class="phase-body">
+        <div class="do-list">
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>HTML5 seekho:</strong> Tags, forms, tables, semantic HTML
+              <span class="tip">💡 Ek simple portfolio page banao — college ka naam, photo, skills</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>CSS seekho:</strong> Flexbox, Grid, responsive design (mobile-friendly)
+              <span class="tip">💡 Us portfolio ko phone pe bhi achha dikhao</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>JavaScript ES6+ seekho:</strong> Variables, arrays, objects, functions, async/await, fetch
+              <span class="tip">💡 JS hi MERN ka core hai — isko seriously lo</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Git + GitHub:</strong> Repo banana, commit, push, branch
+              <span class="tip">💡 Roz ek commit karo chahe chota ho</span>
+            </div>
+          </div>
+        </div>
+        <div class="resource-section">
+          <div class="resource-label">Hindi Resources</div>
+          <div class="resource-cards">
+            <a href="https://www.youtube.com/@CodeWithHarry" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Code With Harry <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@sheriyanscode" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Sheryians Coding School <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@ApnaCollegeOfficial" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Apna College <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank" class="resource-card rc-doc">
+              <span>📖</span> MDN JavaScript Docs
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-badge" style="background:#dcfce7;color:#15803d;">PHASE 1</div>
+        <h3>Node.js + Express.js (Backend)</h3>
+        <span class="weeks">⏱ 3 Weeks</span>
+      </div>
+      <div class="phase-body">
+        <div class="do-list">
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Node.js install karo</strong>, terminal mein node hello.js chalao
+              <span class="tip">💡 fs module se file read/write karo — pehla hands-on</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Express server banao:</strong> GET, POST, PUT, DELETE routes
+              <span class="tip">💡 Postman se test karo — browser se nahi</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Mini project:</strong> JSON file pe CRUD API (bina database ke)
+              <span class="tip">💡 Students ka data JSON mein store karo — name, roll no, marks</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Middleware samjho:</strong> cors, express.json(), custom logger middleware
+              <span class="tip">💡 Khud ek middleware banao jo request ka time log kare</span>
+            </div>
+          </div>
+        </div>
+        <div class="resource-section">
+          <div class="resource-label">Hindi Resources</div>
+          <div class="resource-cards">
+            <a href="https://www.youtube.com/@CodeWithHarry" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Code With Harry – Node.js Course <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@HiteshChoudharydotcom" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Hitesh Choudhary <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@piyushgargdev" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Piyush Garg <span class="hindi-tag">HINDI</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-badge" style="background:#dbeafe;color:#1d4ed8;">PHASE 2</div>
+        <h3>MongoDB + Mongoose</h3>
+        <span class="weeks">⏱ 3 Weeks</span>
+      </div>
+      <div class="phase-body">
+        <div class="do-list">
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>MongoDB Atlas:</strong> Free account, cluster banao, connect string lo
+              <span class="tip">💡 Compass (GUI) bhi install karo — data visually dekhna aasaan hota hai</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Mongoose Schema + Model:</strong> User, Product, Post schemas banao
+              <span class="tip">💡 Validation zarur daalo — required, minlength, etc.</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Full CRUD:</strong> create, find, findById, findByIdAndUpdate, delete
+              <span class="tip">💡 Postman se har ek route test karo</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Mini Project:</strong> Blog API — posts create karo, title/content/author save karo
+              <span class="tip">💡 Yeh project agle phase mein React se connect karoge</span>
+            </div>
+          </div>
+        </div>
+        <div class="resource-section">
+          <div class="resource-label">Hindi Resources</div>
+          <div class="resource-cards">
+            <a href="https://www.youtube.com/@CodeWithHarry" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Code With Harry – MongoDB <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@HiteshChoudharydotcom" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Hitesh Choudhary – Backend <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.mongodb.com/docs/manual/" target="_blank" class="resource-card rc-doc">
+              <span>📖</span> MongoDB Official Docs
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-badge" style="background:#fef9c3;color:#854d0e;">PHASE 3</div>
+        <h3>React.js (Frontend)</h3>
+        <span class="weeks">⏱ 4 Weeks</span>
+      </div>
+      <div class="phase-body">
+        <div class="do-list">
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Vite se React project banao:</strong> npm create vite@latest
+              <span class="tip">💡 CRA (Create React App) mat use karo — purana ho gaya, Vite use karo</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Components + Props + State (useState):</strong> Ek counter, todo list banao
+              <span class="tip">💡 Har component ek alag file mein banao — clean structure</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>useEffect + Axios:</strong> Apna Blog API se data fetch karo React mein
+              <span class="tip">💡 Yeh moment bahut exciting hota hai — tumhara apna data tumhare UI mein!</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>React Router v6:</strong> /home, /blog, /post/:id pages banao
+              <span class="tip">💡 Browser back/forward button kaam karna chahiye</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Project:</strong> Full Blog App — React frontend + Node/MongoDB backend
+              <span class="tip">💡 Yeh tumhara PEHLA complete MERN app hoga 🎉</span>
+            </div>
+          </div>
+        </div>
+        <div class="resource-section">
+          <div class="resource-label">Hindi Resources</div>
+          <div class="resource-cards">
+            <a href="https://www.youtube.com/@sheriyanscode" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Sheryians – React Complete <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@CodeWithHarry" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Code With Harry – React <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@piyushgargdev" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Piyush Garg – React <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://react.dev/learn" target="_blank" class="resource-card rc-doc">
+              <span>📖</span> React Official Docs (New)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-badge" style="background:#fee2e2;color:#dc2626;">PHASE 4</div>
+        <h3>Authentication (JWT + bcrypt)</h3>
+        <span class="weeks">⏱ 2 Weeks</span>
+      </div>
+      <div class="phase-body">
+        <div class="do-list">
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Register/Login API:</strong> bcrypt se password hash karo, JWT token return karo
+              <span class="tip">💡 Password kabhi plain text mein mat save karo — yeh security ka Rule #1 hai</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Protected Routes (Backend):</strong> Middleware jo JWT verify kare
+              <span class="tip">💡 req.user mein user info store karo middleware ke baad</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>React mein Auth:</strong> Token localStorage mein, protected frontend routes
+              <span class="tip">💡 Agar login nahi kiya toh /dashboard nahi jaana chahiye</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Project:</strong> Todo App jisme sirf apna data dikhe — JWT auth ke saath</div>
+          </div>
+        </div>
+        <div class="resource-section">
+          <div class="resource-label">Hindi Resources</div>
+          <div class="resource-cards">
+            <a href="https://www.youtube.com/@HiteshChoudharydotcom" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Hitesh Choudhary – JWT Auth <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@piyushgargdev" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Piyush Garg – Auth Tutorial <span class="hindi-tag">HINDI</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-badge" style="background:#ede9fe;color:#6d28d9;">PHASE 5</div>
+        <h3>Advanced + Deploy</h3>
+        <span class="weeks">⏱ 4 Weeks</span>
+      </div>
+      <div class="phase-body">
+        <div class="do-list">
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Socket.io:</strong> Real-time chat app banao (2 browser tabs mein test karo)
+              <span class="tip">💡 Is project ko dekhke recruiters impress hote hain</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>File Upload:</strong> Multer + Cloudinary se image upload karo profile picture ke liye</div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Redux Toolkit:</strong> E-commerce cart state manage karo
+              <span class="tip">💡 Pehle Context API se karo, phir Redux pe migrate karo — difference samajh aayega</span>
+            </div>
+          </div>
+          <div class="do-item" onclick="toggleCheck(this)">
+            <div class="do-check"></div>
+            <div class="do-text"><strong>Deploy:</strong> Backend → Render.com (free), Frontend → Vercel (free)
+              <span class="tip">💡 Live link resume mein daalo — GitHub repo se better lagta hai</span>
+            </div>
+          </div>
+        </div>
+        <div class="resource-section">
+          <div class="resource-label">Hindi Resources</div>
+          <div class="resource-cards">
+            <a href="https://www.youtube.com/@HiteshChoudharydotcom" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Hitesh Choudhary – Full MERN <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@sheriyanscode" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Sheryians – Projects <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://www.youtube.com/@akshaymarch7" target="_blank" class="resource-card rc-yt-h">
+              <span>📺</span> Akshay Saini – JS Deep Dive <span class="hindi-tag">HINDI</span>
+            </a>
+            <a href="https://render.com" target="_blank" class="resource-card rc-free">
+              <span>☁️</span> Render.com (Free Deploy)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRACTICAL LEARNING STEPS -->
+<section>
+  <div class="container">
+    <div class="sec-label">// Exact Steps for Every Topic</div>
+    <div class="sec-title">Har Topic Ko Aise Seekho</div>
+    <p class="sec-sub">Ek formula jo har topic ke liye kaam karta hai — MERN ya koi bhi technology</p>
+
+    <div class="step-flow">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-action"><span class="emoji">👀</span> Video se Concept Samjho (Sirf 30 Min)</div>
+          <div class="step-detail">Pehle ek short Hindi video dekho jo concept explain kare. 30 min se zyada mat dekho — uske baad brain band ho jaata hai. Notes mat lo abhi.</div>
+          <span class="step-time">⏱ 30 minutes</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-action"><span class="emoji">⌨️</span> Video Band Karo, Khud Type Karo</div>
+          <div class="step-detail">VS Code kholko, video mein jo banaya tha woh khud banao — bina dekhke. Stuck ho toh 10 min baad video kholo, solution dekho, band karo, phir khud karo.</div>
+          <span class="step-time">⏱ 45 minutes</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-action"><span class="emoji">🔧</span> Thoda Toda-Phoda Karo</div>
+          <div class="step-detail">Jo banaya hai usmein changes karo — variable ka naam badlo, ek field add karo, ek feature badlo. Errors ayenge — theek karo. Yahi asli sikhai hai.</div>
+          <span class="step-time">⏱ 30 minutes</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-action"><span class="emoji">🏗️</span> Mini Project Banao — Apna Idea</div>
+          <div class="step-detail">Tutorial wala project nahi — apna kuch. Array seekha? Shopping list. Express seekha? Recipe API. Yeh step skip mat karna — yahi confidence deta hai.</div>
+          <span class="step-time">⏱ 1-2 hours</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-action"><span class="emoji">🚀</span> GitHub Push + README Likho</div>
+          <div class="step-detail">Code push karo. 3-4 line ka README likho — "Kya hai, kaise chalate hain." Yeh habit tumhe professional banati hai aur portfolio bhi build hota hai.</div>
+          <span class="step-time">⏱ 10 minutes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMON MISTAKES -->
+<section>
+  <div class="container">
+    <div class="sec-label">// Avoid These</div>
+    <div class="sec-title">Ye Galtiyan Mat Karna</div>
+    <p class="sec-sub">90% beginners yeh galtiyan karte hain — tum mat karna</p>
+
+    <div class="mistake-list">
+      <div class="mistake-item">
+        <div class="mistake-x">✗</div>
+        <div>
+          <div class="mistake-title">Sirf Video Dekhte Rehna</div>
+          <div class="mistake-fix">10 ghante tutorial dekhne ke baad bhi khud kuch nahi bana sakte — 
+            <span class="fix-text">hath se code karo, keyboard se seekh aata hai, aankhon se nahi.</span>
+          </div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-x">✗</div>
+        <div>
+          <div class="mistake-title">Ek Topic Mein Bahut Deep Jana</div>
+          <div class="mistake-fix">HTML 2 hafte se zyada mat karo, CSS 2 hafte se zyada mat karo —
+            <span class="fix-text">aage badho, real projects banate waqt gaps fill ho jaayenge.</span>
+          </div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-x">✗</div>
+        <div>
+          <div class="mistake-title">Multiple Tutorials Ek Saath</div>
+          <div class="mistake-fix">Ek Harry ka video, ek Hitesh ka, ek English ka — confuse ho jaoge.
+            <span class="fix-text">Ek channel chunno per topic, usse complete karo, tabhi doosra dekho.</span>
+          </div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-x">✗</div>
+        <div>
+          <div class="mistake-title">Environment Setup Mein Din Lagana</div>
+          <div class="mistake-fix">VS Code + Node + Git = 1 ghante ka kaam hai.
+            <span class="fix-text">Setup pe zyada mat rukna — seedha code karo.</span>
+          </div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-x">✗</div>
+        <div>
+          <div class="mistake-title">Comparison Karke Demotivate Hona</div>
+          <div class="mistake-fix">"Ye 2 mahine mein job le gaya, mai 6 mahine mein bhi nahi seekha" — apna pace theek hai.
+            <span class="fix-text">Roz thoda aage badho — yahi kaafi hai.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHANNEL SUMMARY -->
+<section>
+  <div class="container">
+    <div class="sec-label">// Best Hindi Channels</div>
+    <div class="sec-title">Recommended<br>Hindi Channels</div>
+    <p class="sec-sub">Ye channels free mein complete MERN coverage dete hain — koi paid course zaroori nahi</p>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="method-icon">👨‍💻</div>
+        <div class="method-title">Code With Harry</div>
+        <div class="method-desc">MERN ke liye sabse complete Hindi resource. HTML se Node.js tak sab kuch free hai. Beginners ke liye best starting point.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">🎯</div>
+        <div class="method-title">Sheryians Coding School</div>
+        <div class="method-desc">React aur real-world projects ke liye excellent. Modern approach, Tailwind CSS bhi sikhate hain. Highly recommended for React phase.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">🔥</div>
+        <div class="method-title">Hitesh Choudhary</div>
+        <div class="method-desc">Backend (Node + Express + MongoDB) ke liye best. Professional industry experience ke saath padhate hain. Auth aur deployment ke liye best.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">⚡</div>
+        <div class="method-title">Akshay Saini (Namaste JS)</div>
+        <div class="method-desc">JavaScript ke andar se samajhna ho toh yeh channel mandatory hai. Closures, event loop, async — sab clear ho jaata hai.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">🚀</div>
+        <div class="method-title">Piyush Garg</div>
+        <div class="method-desc">Express + React + projects ke liye achha resource. Complete project-based tutorials — dekhte dekhte app ban jaata hai.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">💡</div>
+        <div class="method-title">Thapa Technical</div>
+        <div class="method-desc">MERN stack projects ke liye. Real-world apps banate hain — e-commerce, social media. Intermediate se advanced ke liye useful.</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-box-icon">🆓</div>
+      <div>
+        <div class="tip-box-title">Paid Course Ki Zaroorat Nahi</div>
+        <div class="tip-box-text">Upar diye saare channels FREE hain. Paise mat lagao abhi — pehle free mein seekho. Jab job lage tab soch. Udemy ya any paid course ka koi extra fayda nahi hai — sirf consistency chahiye.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  MERN PRACTICAL GUIDE &nbsp;|&nbsp; HINDI RESOURCES &nbsp;|&nbsp; CODING SE SEEKHO, THEORY SE NAHI 🔥
+</footer>
+
+<script>
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    const check = item.querySelector('.do-check');
+    check.textContent = item.classList.contains('checked') ? '✓' : '';
+  }
+</script>
+
+</body>
+</html>

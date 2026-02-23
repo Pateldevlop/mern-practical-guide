@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERN Stack Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #00ff88;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mongo: #00ed64;
+    --express: #f0db4f;
+    --react: #61dafb;
+    --node: #8cc84b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 20% 20%, rgba(124,58,237,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0,255,136,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    padding: 60px 0 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto 32px;
+    font-weight: 400;
+  }
+
+  /* STACK PILLS */
+  .stack-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .stack-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid;
+    letter-spacing: 0.5px;
+  }
+  .pill-m { background: rgba(0,237,100,0.08); border-color: rgba(0,237,100,0.3); color: var(--mongo); }
+  .pill-e { background: rgba(240,219,79,0.08); border-color: rgba(240,219,79,0.3); color: var(--express); }
+  .pill-r { background: rgba(97,218,251,0.08); border-color: rgba(97,218,251,0.3); color: var(--react); }
+  .pill-n { background: rgba(140,200,75,0.08); border-color: rgba(140,200,75,0.3); color: var(--node); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+  /* TIMELINE */
+  .timeline { padding: 60px 0; }
+  .phase {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0 32px;
+    margin-bottom: 60px;
+    animation: fadeIn 0.5s ease both;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .phase:nth-child(1) { animation-delay: 0.1s; }
+  .phase:nth-child(2) { animation-delay: 0.2s; }
+  .phase:nth-child(3) { animation-delay: 0.3s; }
+  .phase:nth-child(4) { animation-delay: 0.4s; }
+  .phase:nth-child(5) { animation-delay: 0.5s; }
+
+  .phase-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 4px;
+    position: relative;
+  }
+  .phase-left::after {
+    content: '';
+    position: absolute;
+    right: -16px;
+    top: 10px;
+    bottom: -70px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--border), transparent);
+  }
+  .phase-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .phase-weeks {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .phase-wlabel {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .phase-right {}
+  .phase-level {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .level-beginner { background: rgba(0,255,136,0.12); color: var(--accent); }
+  .level-intermediate { background: rgba(245,158,11,0.12); color: var(--accent3); }
+  .level-advanced { background: rgba(124,58,237,0.2); color: #a78bfa; }
+
+  .phase-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .phase-desc {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .topic-card:hover {
+    border-color: var(--accent);
+    background: rgba(0,255,136,0.04);
+  }
+  .topic-icon { font-size: 16px; }
+  .topic-sub { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+
+  /* PROJECT SECTION */
+  .projects-section { padding: 20px 0 60px; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .section-sub {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, var(--accent));
+  }
+  .project-card:hover { border-color: var(--card-accent, var(--accent)); transform: translateY(-2px); }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .project-name { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.3px; }
+  .diff-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    border: 1px solid;
+  }
+  .diff-easy { color: var(--accent); border-color: var(--accent); background: rgba(0,255,136,0.08); }
+  .diff-med { color: var(--accent3); border-color: var(--accent3); background: rgba(245,158,11,0.08); }
+  .diff-hard { color: #a78bfa; border-color: #a78bfa; background: rgba(124,58,237,0.08); }
+  .project-desc { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 14px; font-weight: 400; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* SCHEDULE */
+  .schedule-section { padding: 0 0 80px; }
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .schedule-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .schedule-table td {
+    padding: 14px;
+    border-bottom: 1px solid rgba(30,30,46,0.6);
+    vertical-align: top;
+  }
+  .schedule-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .wk { font-family: 'Space Mono', monospace; color: var(--accent); font-size: 13px; }
+  .focus-area { font-weight: 600; margin-bottom: 3px; }
+  .focus-detail { color: var(--muted); font-size: 12px; font-weight: 400; }
+  .hrs {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent3);
+    white-space: nowrap;
+  }
+  .proj-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: rgba(124,58,237,0.15);
+    color: #c4b5fd;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* TIPS */
+  .tips { padding: 0 0 80px; }
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .tip-icon { font-size: 24px; margin-bottom: 10px; }
+  .tip-title { font-weight: 700; margin-bottom: 6px; font-size: 15px; }
+  .tip-text { color: var(--muted); font-size: 13px; line-height: 1.6; font-weight: 400; }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .phase { grid-template-columns: 80px 1fr; gap: 0 16px; }
+    .phase-title { font-size: 1.3rem; }
+    .topics-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER -->
+  <header>
+    <div class="badge">// COMPLETE GUIDE</div>
+    <h1>MERN Stack<br><span>Roadmap</span></h1>
+    <p class="subtitle">From absolute beginner to job-ready full-stack developer — structured, practical, and project-driven.</p>
+    <div class="stack-row">
+      <div class="stack-pill pill-m"><span class="dot"></span>MongoDB</div>
+      <div class="stack-pill pill-e"><span class="dot"></span>Express.js</div>
+      <div class="stack-pill pill-r"><span class="dot"></span>React.js</div>
+      <div class="stack-pill pill-n"><span class="dot"></span>Node.js</div>
+    </div>
+  </header>
+
+  <!-- PHASE TIMELINE -->
+  <div class="timeline">
+
+    <!-- PHASE 0 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 00</div>
+        <div class="phase-weeks">2</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-beginner">BEGINNER</div>
+        <div class="phase-title">Foundation & Prerequisites</div>
+        <div class="phase-desc">Master the absolute basics before touching MERN. No shortcuts — this foundation determines your speed later.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">🌐</span><div><div>HTML5</div><div class="topic-sub">Semantic tags, forms, structure</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🎨</span><div><div>CSS3</div><div class="topic-sub">Flexbox, Grid, Responsive</div></div></div>
+          <div class="topic-card"><span class="topic-icon">⚡</span><div><div>JavaScript ES6+</div><div class="topic-sub">Arrow fns, destructuring, async/await</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔀</span><div><div>Git & GitHub</div><div class="topic-sub">Commits, branches, push/pull</div></div></div>
+          <div class="topic-card"><span class="topic-icon">💻</span><div><div>Terminal Basics</div><div class="topic-sub">Navigation, npm, file ops</div></div></div>
+          <div class="topic-card"><span class="topic-icon">📦</span><div><div>JSON & REST APIs</div><div class="topic-sub">HTTP methods, status codes</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 01</div>
+        <div class="phase-weeks">3</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-beginner">BEGINNER</div>
+        <div class="phase-title">Node.js & Express.js</div>
+        <div class="phase-desc">Build your backend engine. Learn how servers work, handle HTTP requests, and create your first REST API from scratch.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">🟢</span><div><div>Node.js Core</div><div class="topic-sub">Event loop, modules, fs, path</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🚂</span><div><div>Express Setup</div><div class="topic-sub">Routing, middleware, req/res</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🛣️</span><div><div>REST API Design</div><div class="topic-sub">CRUD endpoints, route params</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔧</span><div><div>Middleware</div><div class="topic-sub">body-parser, cors, custom middleware</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔐</span><div><div>Environment Variables</div><div class="topic-sub">dotenv, .gitignore, secrets</div></div></div>
+          <div class="topic-card"><span class="topic-icon">⚠️</span><div><div>Error Handling</div><div class="topic-sub">Try/catch, global error handler</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 02</div>
+        <div class="phase-weeks">3</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-beginner">BEGINNER</div>
+        <div class="phase-title">MongoDB & Mongoose</div>
+        <div class="phase-desc">Connect your backend to a real database. Learn NoSQL thinking, schema design, and powerful queries with Mongoose ODM.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">🍃</span><div><div>MongoDB Atlas</div><div class="topic-sub">Cloud DB, connection string</div></div></div>
+          <div class="topic-card"><span class="topic-icon">📋</span><div><div>Mongoose Schemas</div><div class="topic-sub">Models, data types, validation</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔍</span><div><div>CRUD Operations</div><div class="topic-sub">find, create, update, delete</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔗</span><div><div>Relationships</div><div class="topic-sub">Populate, references, embedding</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔎</span><div><div>Query Operators</div><div class="topic-sub">Filters, sort, pagination, limit</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🗂️</span><div><div>Indexing Basics</div><div class="topic-sub">Performance, unique indexes</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 03</div>
+        <div class="phase-weeks">4</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-intermediate">INTERMEDIATE</div>
+        <div class="phase-title">React.js Frontend</div>
+        <div class="phase-desc">Build dynamic, component-based UIs. Master hooks, state management, and connect your React app to your own backend API.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">⚛️</span><div><div>Components & JSX</div><div class="topic-sub">Functional, props, rendering</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🪝</span><div><div>React Hooks</div><div class="topic-sub">useState, useEffect, useRef</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔀</span><div><div>React Router v6</div><div class="topic-sub">Pages, params, protected routes</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🌐</span><div><div>Fetch / Axios</div><div class="topic-sub">API calls, loading, error states</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🧩</span><div><div>Context API</div><div class="topic-sub">Global state, useContext</div></div></div>
+          <div class="topic-card"><span class="topic-icon">📝</span><div><div>Forms & Validation</div><div class="topic-sub">Controlled inputs, react-hook-form</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 04</div>
+        <div class="phase-weeks">3</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-intermediate">INTERMEDIATE</div>
+        <div class="phase-title">Authentication & Security</div>
+        <div class="phase-desc">Implement real-world auth from scratch. Learn JWT tokens, hashing, protected routes, and security best practices.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">🔑</span><div><div>JWT Auth</div><div class="topic-sub">Sign, verify, refresh tokens</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔒</span><div><div>bcrypt Hashing</div><div class="topic-sub">Password hashing & salting</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🛡️</span><div><div>Protect Routes</div><div class="topic-sub">Middleware guards, roles</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🍪</span><div><div>Cookies & Sessions</div><div class="topic-sub">httpOnly cookies, refresh flow</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔓</span><div><div>OAuth (Google)</div><div class="topic-sub">Passport.js or manual OAuth2</div></div></div>
+          <div class="topic-card"><span class="topic-icon">⚔️</span><div><div>Security Headers</div><div class="topic-sub">helmet.js, rate limiting, CORS</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 05</div>
+        <div class="phase-weeks">3</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-intermediate">INTERMEDIATE</div>
+        <div class="phase-title">Advanced Backend Patterns</div>
+        <div class="phase-desc">Level up your API with professional-grade patterns used in real production applications.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">📁</span><div><div>File Uploads</div><div class="topic-sub">Multer, Cloudinary integration</div></div></div>
+          <div class="topic-card"><span class="topic-icon">📧</span><div><div>Email Service</div><div class="topic-sub">Nodemailer, SendGrid</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🧱</span><div><div>MVC Architecture</div><div class="topic-sub">Controllers, services, models</div></div></div>
+          <div class="topic-card"><span class="topic-icon">⚡</span><div><div>Caching with Redis</div><div class="topic-sub">Cache-aside pattern, TTL</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔌</span><div><div>WebSockets</div><div class="topic-sub">Socket.io, real-time events</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🧪</span><div><div>Testing</div><div class="topic-sub">Jest, Supertest, unit tests</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 06</div>
+        <div class="phase-weeks">3</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-advanced">ADVANCED</div>
+        <div class="phase-title">Advanced React & State</div>
+        <div class="phase-desc">Master performance, advanced state patterns, and modern React ecosystem tools used in professional teams.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">🏪</span><div><div>Redux Toolkit</div><div class="topic-sub">Slices, thunks, RTK Query</div></div></div>
+          <div class="topic-card"><span class="topic-icon">⚡</span><div><div>React Query</div><div class="topic-sub">Server state, caching, mutations</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🏎️</span><div><div>Performance</div><div class="topic-sub">memo, useMemo, useCallback, lazy</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🎨</span><div><div>Tailwind CSS</div><div class="topic-sub">Utility-first, responsive design</div></div></div>
+          <div class="topic-card"><span class="topic-icon">📡</span><div><div>Real-time UI</div><div class="topic-sub">Socket.io client, live updates</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔧</span><div><div>Custom Hooks</div><div class="topic-sub">Reusable logic, abstractions</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 7 -->
+    <div class="phase">
+      <div class="phase-left">
+        <div class="phase-num">PHASE 07</div>
+        <div class="phase-weeks">3</div>
+        <div class="phase-wlabel">Weeks</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-level level-advanced">ADVANCED</div>
+        <div class="phase-title">Deployment & DevOps</div>
+        <div class="phase-desc">Ship real apps to the internet. Learn CI/CD, containerization, and cloud deployment like professionals do it.</div>
+        <div class="topics-grid">
+          <div class="topic-card"><span class="topic-icon">🐳</span><div><div>Docker</div><div class="topic-sub">Containers, docker-compose</div></div></div>
+          <div class="topic-card"><span class="topic-icon">☁️</span><div><div>Render / Railway</div><div class="topic-sub">Free-tier backend deploy</div></div></div>
+          <div class="topic-card"><span class="topic-icon">▲</span><div><div>Vercel / Netlify</div><div class="topic-sub">React frontend deploy</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🔄</span><div><div>CI/CD Basics</div><div class="topic-sub">GitHub Actions, auto-deploy</div></div></div>
+          <div class="topic-card"><span class="topic-icon">📊</span><div><div>Logging & Monitoring</div><div class="topic-sub">Morgan, Winston, error tracking</div></div></div>
+          <div class="topic-card"><span class="topic-icon">🌐</span><div><div>Custom Domain + HTTPS</div><div class="topic-sub">DNS, SSL certificates</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="projects-section">
+    <div class="section-label">// BUILD TO LEARN</div>
+    <div class="section-title">Projects by Level</div>
+    <p class="section-sub">Build real projects at each phase — not toy examples. Every project should go on your GitHub.</p>
+
+    <div class="projects-grid">
+
+      <div class="project-card" style="--card-accent: var(--accent)">
+        <div class="project-header">
+          <div class="project-name">📝 Todo App + Auth</div>
+          <div class="diff-badge diff-easy">STARTER</div>
+        </div>
+        <div class="project-desc">Classic todo app with user registration and login. Each user sees only their own todos. Foundation of every real app.</div>
+        <div class="project-tags">
+          <span class="tag">Node+Express</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">React</span>
+          <span class="tag">JWT Auth</span>
+        </div>
+      </div>
+
+      <div class="project-card" style="--card-accent: var(--express)">
+        <div class="project-header">
+          <div class="project-name">📰 Blog Platform</div>
+          <div class="diff-badge diff-easy">STARTER</div>
+        </div>
+        <div class="project-desc">Full CRUD blog with author accounts, categories, markdown support, and comment system. Great for practicing REST APIs.</div>
+        <div class="project-tags">
+          <span class="tag">CRUD</span>
+          <span class="tag">Cloudinary</span>
+          <span class="tag">React Router</span>
+          <span class="tag">Pagination</span>
+        </div>
+      </div>
+
+      <div class="project-card" style="--card-accent: var(--accent3)">
+        <div class="project-header">
+          <div class="project-name">🛒 E-Commerce Store</div>
+          <div class="diff-badge diff-med">INTERMEDIATE</div>
+        </div>
+        <div class="project-desc">Product listings, shopping cart, user orders, and Stripe payment integration. One of the strongest portfolio pieces you can build.</div>
+        <div class="project-tags">
+          <span class="tag">Stripe Payments</span>
+          <span class="tag">Cart State</span>
+          <span class="tag">Admin Panel</span>
+          <span class="tag">File Upload</span>
+        </div>
+      </div>
+
+      <div class="project-card" style="--card-accent: var(--react)">
+        <div class="project-header">
+          <div class="project-name">💬 Real-Time Chat App</div>
+          <div class="diff-badge diff-med">INTERMEDIATE</div>
+        </div>
+        <div class="project-desc">Private & group messaging with real-time delivery using Socket.io. Online status, typing indicators, and message history.</div>
+        <div class="project-tags">
+          <span class="tag">Socket.io</span>
+          <span class="tag">Real-time</span>
+          <span class="tag">Rooms</span>
+          <span class="tag">Online Status</span>
+        </div>
+      </div>
+
+      <div class="project-card" style="--card-accent: #f472b6">
+        <div class="project-header">
+          <div class="project-name">📋 Project Manager</div>
+          <div class="diff-badge diff-med">INTERMEDIATE</div>
+        </div>
+        <div class="project-desc">Trello-like board with drag-and-drop tasks, team members, due dates, and real-time collaboration. Great Redux practice.</div>
+        <div class="project-tags">
+          <span class="tag">Redux Toolkit</span>
+          <span class="tag">Drag & Drop</span>
+          <span class="tag">Teams</span>
+          <span class="tag">Notifications</span>
+        </div>
+      </div>
+
+      <div class="project-card" style="--card-accent: #a78bfa">
+        <div class="project-header">
+          <div class="project-name">🏦 Finance Tracker</div>
+          <div class="diff-badge diff-hard">ADVANCED</div>
+        </div>
+        <div class="project-desc">Income/expense tracking with charts, budgets, recurring transactions, multi-currency support. Deploy with Docker + CI/CD pipeline.</div>
+        <div class="project-tags">
+          <span class="tag">Charts.js</span>
+          <span class="tag">Redis Cache</span>
+          <span class="tag">Docker</span>
+          <span class="tag">GitHub Actions</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCHEDULE TABLE -->
+  <div class="schedule-section">
+    <div class="section-label">// STUDY PLAN</div>
+    <div class="section-title">24-Week Schedule</div>
+    <p class="section-sub">Assuming 2–3 hours/day on weekdays and 4–5 hours on weekends (~20 hrs/week).</p>
+
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Weeks</th>
+          <th>Focus</th>
+          <th>Daily Hrs</th>
+          <th>Milestone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="wk">1–2</td>
+          <td><div class="focus-area">HTML, CSS, JS Basics</div><div class="focus-detail">Semantic HTML, Flexbox, ES6+ syntax</div></td>
+          <td class="hrs">2–3 hrs</td>
+          <td><span class="proj-tag">Portfolio Page</span></td>
+        </tr>
+        <tr>
+          <td class="wk">3–5</td>
+          <td><div class="focus-area">Node.js & Express</div><div class="focus-detail">Server setup, routing, REST APIs, Postman</div></td>
+          <td class="hrs">2–3 hrs</td>
+          <td><span class="proj-tag">Basic REST API</span></td>
+        </tr>
+        <tr>
+          <td class="wk">6–8</td>
+          <td><div class="focus-area">MongoDB & Mongoose</div><div class="focus-detail">Atlas setup, schemas, CRUD, relationships</div></td>
+          <td class="hrs">2–3 hrs</td>
+          <td><span class="proj-tag">Blog API (no frontend)</span></td>
+        </tr>
+        <tr>
+          <td class="wk">9–12</td>
+          <td><div class="focus-area">React.js</div><div class="focus-detail">Components, hooks, routing, Axios API calls</div></td>
+          <td class="hrs">3 hrs</td>
+          <td><span class="proj-tag">Connect React → Blog API</span></td>
+        </tr>
+        <tr>
+          <td class="wk">13–15</td>
+          <td><div class="focus-area">Authentication</div><div class="focus-detail">JWT, bcrypt, protected routes, login/register</div></td>
+          <td class="hrs">2–3 hrs</td>
+          <td><span class="proj-tag">Todo App with Auth</span></td>
+        </tr>
+        <tr>
+          <td class="wk">16–18</td>
+          <td><div class="focus-area">Advanced Backend</div><div class="focus-detail">File uploads, email, WebSockets, testing</div></td>
+          <td class="hrs">2–3 hrs</td>
+          <td><span class="proj-tag">Chat App</span></td>
+        </tr>
+        <tr>
+          <td class="wk">19–21</td>
+          <td><div class="focus-area">Advanced React</div><div class="focus-detail">Redux Toolkit, React Query, Tailwind, performance</div></td>
+          <td class="hrs">3 hrs</td>
+          <td><span class="proj-tag">E-Commerce Frontend</span></td>
+        </tr>
+        <tr>
+          <td class="wk">22–24</td>
+          <td><div class="focus-area">Deployment & Polish</div><div class="focus-detail">Docker, Vercel/Render, CI/CD, final project</div></td>
+          <td class="hrs">3–4 hrs</td>
+          <td><span class="proj-tag">Deploy All 3 Projects 🚀</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips">
+    <div class="section-label">// PRO TIPS</div>
+    <div class="section-title">Study Strategies</div>
+    <p class="section-sub" style="margin-bottom: 24px;">Habits that separate fast learners from those who stagnate.</p>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">📚</div>
+        <div class="tip-title">Learn by Building</div>
+        <div class="tip-text">Never watch more than 30 minutes of a tutorial without coding along. Type every line — don't copy-paste.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🐛</div>
+        <div class="tip-title">Embrace Errors</div>
+        <div class="tip-text">Spend 30 min debugging before asking for help. Reading error messages is a core developer skill.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📂</div>
+        <div class="tip-title">GitHub Everything</div>
+        <div class="tip-text">Push code daily, even if broken. Your commit history is your visible proof of work to employers.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🔁</div>
+        <div class="tip-title">Revise Topics Weekly</div>
+        <div class="tip-text">Every Friday, spend 30 min reviewing concepts from that week. Spaced repetition beats cramming.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🌐</div>
+        <div class="tip-title">Deploy Early</div>
+        <div class="tip-text">Deploy your first project by week 8. Seeing your app live online is the biggest motivation booster.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📖</div>
+        <div class="tip-title">Read Official Docs</div>
+        <div class="tip-text">React docs, MDN, MongoDB docs — these are more reliable than any tutorial. Train yourself to read them.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  MERN STACK ROADMAP &nbsp;|&nbsp; BEGINNER → ADVANCED &nbsp;|&nbsp; ~24 WEEKS
+</footer>
+
+</body>
+</html>
